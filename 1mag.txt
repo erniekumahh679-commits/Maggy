@@ -1,0 +1,206 @@
+--!strict
+
+--// SKYBOX
+local Lighting = game:GetService("Lighting")
+
+local skyData = {
+	SkyboxBk = "rbxassetid://4498828382",
+	SkyboxDn = "rbxassetid://4498828812",
+	SkyboxFt = "rbxassetid://4498829917",
+	SkyboxLf = "rbxassetid://4498830911",
+	SkyboxRt = "rbxassetid://4498830417",
+	SkyboxUp = "rbxassetid://4498831746"
+}
+
+local function applySkybox()
+	local sky = Lighting:FindFirstChildOfClass("Sky")
+
+	if not sky then
+		sky = Instance.new("Sky")
+		sky.Parent = Lighting
+	end
+
+	for property, value in pairs(skyData) do
+		sky[property] = value
+	end
+end
+
+applySkybox()
+
+Lighting.ChildRemoved:Connect(function(child)
+	if child:IsA("Sky") then
+		task.wait()
+		applySkybox()
+	end
+end)
+
+Lighting.ChildAdded:Connect(function(child)
+	if child:IsA("Sky") then
+		task.wait()
+		applySkybox()
+	end
+end)
+
+
+--// ASSET REPLACEMENT
+
+local function getAsset(url: string): string
+	local success, result = pcall(function()
+		if writefile and isfile and getcustomasset then
+			local fileName = "tex_" .. tostring(string.len(url) % 99999) .. "_" .. tostring(string.byte(url, 10) or 1) .. ".asset"
+
+			if not isfile(fileName) then
+				local data = game:HttpGet(url)
+
+				if data and #data > 80 then
+					writefile(fileName, data)
+				end
+			end
+
+			local asset = getcustomasset(fileName)
+
+			if asset and asset ~= "" then
+				return asset
+			end
+		end
+
+		return url
+	end)
+
+	return (success and result) or url
+end
+
+
+local Rules = {
+	{ids = {7658055825}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/grods.png"},
+	{ids = {17803962335}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/attachment.png"},
+	{ids = {13854780213}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/logo.png"},
+	{ids = {13854780042}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heartleft.png"},
+	{ids = {81461991645938}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/lvl.png"},
+	{ids = {16802957270}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heartbroken.png"},
+	{ids = {99115398611290}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/icbtw.png"},
+	{ids = {133917828562858, 121503061771505}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/mine.webp"},
+	{ids = {17175092502, 17094014569}, url = "rbxassetid://72106446453934"},
+
+	{ids = {106623367501544, 131795064007344, 73543520622815}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/f.png"},
+	{ids = {80716950169934}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d-.png"},
+	{ids = {136100661820261}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d.png"},
+	{ids = {107898816876115}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/d+.png"},
+	{ids = {134520747948636}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c-.png"},
+	{ids = {114166096331502}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c.png"},
+	{ids = {90039594400813}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/c+.png"},
+	{ids = {133903971285645}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b-.png"},
+	{ids = {82834564754747}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b.png"},
+	{ids = {73345783863790}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/b+.png"},
+	{ids = {113997689031026}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a-.png"},
+	{ids = {88059506918419}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a.png"},
+	{ids = {112183171942172}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/a+.png"},
+	{ids = {104871954739030}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/s.png"},
+	{ids = {109012386782238}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/ss.png"},
+	{ids = {127982903682334}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/u.png"},
+	{ids = {133793956251748}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/top200xrank.png"},
+	{ids = {116941545385923}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/nemx.png"},
+
+	{ids = {17138490999}, url = "rbxassetid://1721952882"},
+	{ids = {103035811146294}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16810041280}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16810321565}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/allclear.base.ogg"},
+	{ids = {16770456156, 16492958314}, url = "rbxassetid://2428506580"},
+	{ids = {16537337310, 16537449730}, url = "rbxassetid://70643163489676"},
+	{ids = {17826470563}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/theeyellow.ogg"},
+	{ids = {18221725850, 18239670056, 18221726246}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/winnerwinner.ogg"},
+	{ids = {17026600996}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/showscore.base.ogg"},
+	{ids = {16530229616}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill1.ogg"},
+	{ids = {16530229541}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill2.ogg"},
+	{ids = {16530229695}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kill3.ogg"},
+	{ids = {8483887957}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/clearspin.base.ogg"},
+	{ids = {6384899588}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/lego-build.mp3"},
+	{ids = {16737738420}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/Sliding.mp3"},
+	{ids = {70643163489676}, url = "rbxassetid://17405655409"},
+	{ids = {91547731028928}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/studio-audience-awwww-sound-fx.mp3"},
+	{ids = {138975587469438}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/final-fantasy-vii-victory-fanfare-1.mp3"},
+	{ids = {17697682466, 17733314783}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/kuchu-toshi.mp3"},
+	{ids = {177266782}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/menuclick.base.ogg"},
+	{ids = {18525513345}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/achievement_3.base.ogg"},
+	{ids = {13110130082}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/target.base.ogg"},
+	{ids = {17467242617}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/bluer.ogg"},
+	{ids = {17016581922}, url = "https://raw.githubusercontent.com/prism658/Resources-fleasion/main/elimin.mp3"},
+
+	{ids = {6384899588}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/AUDIO_APPEARANCE.wav"},
+	{ids = {8483887957}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_weaponpull.wav"},
+	{ids = {16537337310, 16537449730}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_break1.wav"},
+	{ids = {17016581922}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/break2.ogg"},
+	{ids = {16810321565}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_closet_impact.ogg"},
+	{ids = {16770456156}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_a_lithit.wav"},
+	{ids = {177266782}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_select.wav"},
+	{ids = {16492958314}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_scytheburst.wav"},
+	{ids = {103035811146294}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_b.wav"},
+	{ids = {16810041280}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_abreak.wav"},
+	{ids = {16530229695, 16530229541, 16530229616}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/mus_sfx_gigapunch.wav"},
+	{ids = {17138490999}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/heal.ogg"},
+	{ids = {18525513345}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_dimbox.wav"},
+	{ids = {13110130082}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_credit_s.wav"},
+	{ids = {17153811469}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_breakc.wav"},
+	{ids = {17826470563}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/Finale.ogg"},
+	{ids = {17026600996}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_heavydamage.wav"},
+	{ids = {17467242617}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/sdfinal.ogg"},
+	{ids = {18221725850, 18239670056, 18221726246}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/snd_dumbvictory.wav"},
+	{ids = {17697682466, 17733314783}, url = "https://raw.githubusercontent.com/prism658/undertale-txtpack/main/Hotel.mp3"},
+}
+
+local IdMap: {[string]: string} = {}
+
+for _, rule in ipairs(Rules) do
+	local asset = getAsset(rule.url)
+
+	for _, id in ipairs(rule.ids) do
+		IdMap[tostring(id)] = asset
+	end
+end
+
+local function apply(obj: Instance)
+	if not obj then
+		return
+	end
+
+	local function replace(property: string)
+		local success, value = pcall(function()
+			return obj[property]
+		end)
+
+		if not success or type(value) ~= "string" then
+			return
+		end
+
+		local id = string.match(value, "%d+")
+
+		if id and IdMap[id] then
+			pcall(function()
+				obj[property] = IdMap[id]
+			end)
+		end
+	end
+
+	if obj:IsA("Sound") then
+		replace("SoundId")
+
+	elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+		replace("Image")
+
+	elseif obj:IsA("Decal") or obj:IsA("Texture") then
+		replace("Texture")
+
+	elseif obj:IsA("MeshPart") then
+		replace("TextureID")
+	end
+end
+
+task.wait(2)
+
+for _, v in ipairs(game:GetDescendants()) do
+	task.spawn(apply, v)
+end
+
+game.DescendantAdded:Connect(function(obj)
+	task.defer(apply, obj)
+end)
